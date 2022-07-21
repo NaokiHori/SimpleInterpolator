@@ -1,0 +1,1 @@
+.. |BAO2017| replace:: Bao et al, *J. Comput. Phys.* (**347**), 2017
