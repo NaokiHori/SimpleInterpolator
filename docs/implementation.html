@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Implementation &#8212; SimpleInterpolator 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script>window.MathJax = {"TeX": {"Macros": {"vat": ["{\\left. {#1} \\right|_{#2}}", 2], "der": ["{\\frac{\\partial #1}{\\partial #2}}", 2], "dder": ["{\\frac{\\delta #1}{\\delta #2}}", 2], "pim": ["i-\\frac{1}{2}"], "pic": ["i             "], "pip": ["i+\\frac{1}{2}"], "pjm": ["j-\\frac{1}{2}"], "pjc": ["j             "], "pjp": ["j+\\frac{1}{2}"], "xim": ["i             "], "xic": ["i+\\frac{1}{2}"], "xip": ["i+1           "], "xjm": ["j-\\frac{1}{2}"], "xjc": ["j             "], "xjp": ["j+\\frac{1}{2}"], "yim": ["i-\\frac{1}{2}"], "yic": ["i             "], "yip": ["i+\\frac{1}{2}"], "yjm": ["j             "], "yjc": ["j+\\frac{1}{2}"], "yjp": ["j+1           "], "ux": ["{u_x}"], "uy": ["{u_y}"]}}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Others" href="others.html" />
+    <link rel="prev" title="Domain" href="domain.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">SimpleInterpolator</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=NaokiHori&repo=SimpleInterpolator&type=true&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="domain.html">Domain</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="others.html">Others</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interpolations.html">Appendix - one-dimensional interpolations</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="domain.html" title="previous chapter">Domain</a></li>
+      <li>Next: <a href="others.html" title="next chapter">Others</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="implementation">
+<h1>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">¶</a></h1>
+<p>The interpolation algorithm consists of 4 steps, which are implemented under <code class="docutils literal notranslate"><span class="pre">src/kernel</span></code>.</p>
+<ol class="arabic">
+<li><p>Compute vorticity</p>
+<div class="math notranslate nohighlight">
+\[\omega_z
+=
+-\dder{\uy}{x}
++\dder{\ux}{y},\]</div>
+<p>which are defined at all cell corners including points on the walls.</p>
+</li>
+<li><p>Compute scalar potential</p>
+<p>We solve a Poisson equation</p>
+<div class="math notranslate nohighlight">
+\[\dder{}{x} \left( \dder{\psi}{x} \right)
++
+\dder{}{y} \left( \dder{\psi}{y} \right)
+=
+\omega_z,\]</div>
+<p>whose solutions are defined at all cell corners (same locations as <span class="math notranslate nohighlight">\(\omega_z\)</span>).
+This equation is solved by an FFT-based solver which is adopted in <a class="reference external" href="https://naokihori.github.io/SimpleNavierStokesSolver/implementation/fluid/compute_potential.html">Simple Navier-Stokes Solver</a>.</p>
+</li>
+<li><p>Interpolate scalar potential</p>
+<p><span class="math notranslate nohighlight">\(\psi\)</span> is interpolated to the new grid corners.
+User can choose an arbitrary scheme based on the accuracy, TVD property, etc.
+In the current example, cubic interpolations are used in <span class="math notranslate nohighlight">\(x\)</span> direction, while information is interpolated in the spectral domain in <span class="math notranslate nohighlight">\(y\)</span> direction thanks to the uniform grid spacing.</p>
+</li>
+<li><p>Compute velocity</p>
+<p>New velocity field on the interpolated grid is obtained by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\ux &amp;=  \dder{\psi}{y}, \\
+\uy &amp;= -\dder{\psi}{x},\end{split}\]</div>
+<p>which are of course defined at <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> cell faces, respectively.
+Conventional finite-difference schemes are used.</p>
+</li>
+</ol>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2022, Naoki Hori.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/implementation.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
