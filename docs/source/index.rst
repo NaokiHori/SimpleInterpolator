@@ -11,7 +11,7 @@ Direct and divergence-free velocity interpolator
    :maxdepth: 1
 
    theory
-   method
+   domain
    implementation
    others
    interpolations

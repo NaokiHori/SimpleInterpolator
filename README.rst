@@ -17,7 +17,7 @@ Overview
 ********
 
 This library interpolates a velocity field of wall-bounded flows to the other grid while keeping its original divergence.
-Both velocity fields are assumed to be defined on staggered grids.
+Both velocity fields are assumed to be defined on `staggered grids <https://naokihori.github.io/SimpleInterpolator/domain.html>`_, and non-uniform grid spacings are allowed in the wall-normal (:math:`x`) direction.
 
 This might be useful to create an initial velocity field which must be solenoidal (e.g., multi-phase simulations with a phase indicator) from a flow field obtained by a coarser grid.
 
@@ -31,7 +31,7 @@ Please refer to `the documentation <https://naokihori.github.io/SimpleInterpolat
 Dependency
 **********
 
-Although the library uses FFTW3 just for simplicity (the author is interested in a very simple configuration), it is only needed by the Poisson solver and the interpolation itself is independent of it.
+Although the library uses `FFTW <https://www.fftw.org>`_ just for simplicity (the author is interested in a very simple configuration), it is only needed by the Poisson solver and the interpolation itself is independent of it.
 One can get rid of it by modifying the Poisson solver and scalar interpolating methods (see `the documentation <https://naokihori.github.io/SimpleInterpolator/>`_).
 
 For quick start to see what is going on, use `Docker <https://www.docker.com>`_.

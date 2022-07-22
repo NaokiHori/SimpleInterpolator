@@ -1,5 +1,5 @@
 ######
-Method
+Domain
 ######
 
 We consider a domain with ``itot + 2`` and ``jtot`` pressure nodes :math:`\vat{p}{\pic, \pjc}` in :math:`x` and :math:`y` directions, respectively:
