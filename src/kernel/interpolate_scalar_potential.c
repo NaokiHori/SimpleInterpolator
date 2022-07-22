@@ -188,6 +188,8 @@ static int simple_interpolation_cubic(const int n1, const int n2, const double *
 }
 
 int interpolate_scalar_potential(const interpolate_t *bef, const interpolate_t *aft, const double *bef_q, double *aft_q){
+  /* interpolating 2D scalar field defined at cell corners [0:itot, 1:jtot] */
+  /* cubic interpolation and spectral interpolation are used in x and y directions, respectively, by default */
   const int bef_itot = bef->itot;
   const int bef_jtot = bef->jtot;
   const int aft_itot = aft->itot;

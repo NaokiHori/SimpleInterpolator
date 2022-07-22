@@ -25,14 +25,14 @@ This might be useful to create an initial velocity field which must be solenoida
 Method
 ******
 
-Please refer to the documentation.
+Please refer to `the documentation <https://naokihori.github.io/SimpleInterpolator/>`_.
 
 **********
 Dependency
 **********
 
 Although the library uses FFTW3 just for simplicity (the author is interested in a very simple configuration), it is only needed by the Poisson solver and the interpolation itself is independent of it.
-One can get rid of it by modifying the Poisson solver and scalar interpolating methods (see documentation).
+One can get rid of it by modifying the Poisson solver and scalar interpolating methods (see `the documentation <https://naokihori.github.io/SimpleInterpolator/>`_).
 
 For quick start to see what is going on, use `Docker <https://www.docker.com>`_.
 
@@ -102,5 +102,5 @@ giving e.g.
 .. code-block:: text
 
    maximum divergence of bef:  2.7e-14
-   maximum divergence of aft:  2.2e-12
+   maximum divergence of aft:  4.5e-12
 
